@@ -43,9 +43,11 @@ public class AudioRecorderView extends RelativeLayout {
     // Views
     ViewSwitcher mViewSwitcher;
     TextView textViewCounter;
+
     // Handlers and Listners
     Handler handler;
     AudioRecorderListener mAudioRecorderListener;
+
     // Helpers
     boolean isRecording;
     int recordLimitTime = 0;
@@ -54,28 +56,34 @@ public class AudioRecorderView extends RelativeLayout {
     int colorBackground;
     String fileName;
     String filePath;
+
     // Initialization of Runnable to update counter of time record
     Runnable UpdateRecordTime = new Runnable() {
         public void run() {
             if (isRecording) {
+
                 if (recordTime == 60) {
                     recordTime = 0;
                     minutes++;
                 }
                 textViewCounter.setText(String.valueOf("" + (minutes > 9 ? minutes : "0" + minutes) + ":" + (recordTime > 9 ? recordTime : "0" + recordTime)));
                 recordTime += 1;
-// Delay 1s before next call
+                
+                // Delay 1s before next call
                 handler.postDelayed(this, 1000);
             }
         }
     };
+
     // Player and Recorder
     private MediaRecorder mRecorder = null;
     private MediaPlayer mPlayer = null;
+
     private OnClickListener onClickListenerStartRecord = new OnClickListener() {
         @Override
         public void onClick(final View v) {
-//v.setSelected(true);
+            
+            //v.setSelected(true);
             if (!isRecording) {
                 vibrate();
                 final int stop_button = v.getContext().getResources().getIdentifier("stop_button", "drawable", v.getContext().getPackageName());
@@ -84,14 +92,15 @@ public class AudioRecorderView extends RelativeLayout {
                 mRecorder.setAudioSource(AUDIO_SOURCE);
                 mRecorder.setOutputFormat(OUTPUT_FORMAT);
 
-// Generate file name and get the path to save the files
+                // Generate file name and get the path to save the files
                 FileManager fileManager = new FileManager(getContext());
                 fileName = fileManager.createFileName(EXTENSION_FILE);
                 filePath = fileManager.getFileName(fileName);
 
                 mRecorder.setOutputFile(filePath);
                 mRecorder.setAudioEncoder(AUDIO_ENCODER);
-// If on the plugin receive as a parameter the record limit time, should be defined on Media Recorder
+                
+                // If on the plugin receive as a parameter the record limit time, should be defined on Media Recorder
                 if (recordLimitTime > 0)
                     mRecorder.setMaxDuration(recordLimitTime);
 
@@ -118,6 +127,7 @@ public class AudioRecorderView extends RelativeLayout {
             }
         }
     };
+
     private OnClickListener onClickListenerPlayRecord = new OnClickListener() {
 
         @Override
@@ -156,6 +166,7 @@ public class AudioRecorderView extends RelativeLayout {
             }
         }
     };
+
     private OnClickListener onClickListenerRejectAudio = new OnClickListener() {
 
         @Override
@@ -165,7 +176,7 @@ public class AudioRecorderView extends RelativeLayout {
                 mPlayer = null;
             }
 
-// Delete file when the clip is rejected
+            // Delete file when the clip is rejected
             if (new FileManager(getContext()).deleteFileByName(fileName))
                 Log.i(AudioRecorderPlugin.LOG_TAG, "File delete with success");
             textViewCounter.setText("00:00");
@@ -177,6 +188,7 @@ public class AudioRecorderView extends RelativeLayout {
             mViewSwitcher.showPrevious();
         }
     };
+
     private OnClickListener onClickListenerAcceptAudio = new OnClickListener() {
 
         @Override
@@ -186,11 +198,12 @@ public class AudioRecorderView extends RelativeLayout {
             sendSuccessCallback(filePath, fileName);
         }
     };
+
     private OnClickListener onClickListenerCloseView = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
-// Delete file when close the view
+            // Delete file when close the view
             if (new FileManager(getContext()).deleteFileByName(fileName))
                 Log.i(AudioRecorderPlugin.LOG_TAG, "File delete with success");
 
@@ -229,6 +242,7 @@ public class AudioRecorderView extends RelativeLayout {
      * Initialize all views and inflate the xml layout to the view
      */
     private void init() {
+
         final int view_audio_recorderLayoutId = this.getContext().getResources().getIdentifier("view_audio_recorder", "layout", getContext().getPackageName());
         final int view_audio_recorderViewId = this.getContext().getResources().getIdentifier("view_audio_recorder", "id", getContext().getPackageName());
         final int viewSwitcher_audio_recorder = this.getContext().getResources().getIdentifier("viewSwitcher_audio_recorder", "id", getContext().getPackageName());
@@ -342,7 +356,8 @@ public class AudioRecorderView extends RelativeLayout {
      * @param imageButton
      */
     private void stopRecord(ImageButton imageButton) {
-//imageButton.setImageResource(R.drawable.ic_play_arrow_audio);
+        
+        //imageButton.setImageResource(R.drawable.ic_play_arrow_audio);
         if (imageButton != null) {
             final int record_button = getContext().getResources().getIdentifier("record_button", "drawable", getContext().getPackageName());
             setStopImageDrawable(imageButton, record_button);
@@ -356,7 +371,13 @@ public class AudioRecorderView extends RelativeLayout {
             isRecording = false;
             recordTime = 1;
             minutes = 0;
-            mViewSwitcher.showNext();
+            // mViewSwitcher.showNext();
+
+            // Let's pretend that the accept button was clicked
+            stopMediaPlayer(null);
+
+            sendSuccessCallback(filePath, fileName);
+
         }
     }
 
@@ -427,9 +448,6 @@ public class AudioRecorderView extends RelativeLayout {
      * @param res
      */
     private void setStopImageDrawable(View v, int res) {
-//   PorterDuff.Mode mMode = PorterDuff.Mode.MULTIPLY;
-// Drawable dr = getResources().getDrawable(res);
-// dr.setColorFilter(color, mMode);
         ((ImageButton) v).setImageDrawable((getResources().getDrawable(res)));
     }
 
@@ -439,6 +457,7 @@ public class AudioRecorderView extends RelativeLayout {
      * @return the drawable
      */
     private Drawable createSelectorIconApplications(Drawable iconPressed) {
+
         StateListDrawable drawable = new StateListDrawable();
 
         BitmapDrawable bitmapDrawable = getDisableButton(iconPressed);
@@ -460,7 +479,7 @@ public class AudioRecorderView extends RelativeLayout {
     private BitmapDrawable getDisableButton(Drawable icon) {
         Bitmap enabledBitmap = ((BitmapDrawable) icon).getBitmap();
 
-// Setting alpha directly just didn't work, so we draw a new bitmap!
+        // Setting alpha directly just didn't work, so we draw a new bitmap!
         Bitmap disabledBitmap = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(),
                 android.graphics.Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(disabledBitmap);
