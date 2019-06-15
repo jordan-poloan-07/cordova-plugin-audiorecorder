@@ -289,8 +289,6 @@ public class AudioRecorderView extends RelativeLayout {
 
         // Get View of TextView Message
         textViewMessage = (TextView) findViewById(text_view_message);
-        textViewMessage.setTextColor(Color.WHITE);
-        textViewMessage.setText(viewMessage);
 
         // Initialize the Handler to update the text view counter
         handler = new Handler();
@@ -421,6 +419,8 @@ public class AudioRecorderView extends RelativeLayout {
     }
 
     private void updateViewWithNewColors(int viewColor, int backgroundColor) {
+        textViewMessage.setTextColor(Color.WHITE);
+        textViewMessage.setText(viewMessage);
 //        PorterDuff.Mode mMode = PorterDuff.Mode.SRC_IN;
 //
 //        Drawable dr = getResources().getDrawable(R.drawable.ic_mic_audio);
