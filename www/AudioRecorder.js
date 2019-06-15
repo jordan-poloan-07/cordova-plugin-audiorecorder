@@ -6,8 +6,8 @@
 
 var exec = require("cordova/exec");
 
-exports.recordAudio = function(successCallback, errorCallback, durationLimit, viewColor, backgroundColor){
-    exec(successCallback, errorCallback, "AudioRecorderPlugin", "recordAudio", [durationLimit, viewColor, backgroundColor]);    
+exports.recordAudio = function(successCallback, errorCallback, durationLimit, message, viewColor, backgroundColor){
+    exec(successCallback, errorCallback, "AudioRecorderPlugin", "recordAudio", [durationLimit, message, viewColor, backgroundColor]);    
 };
 
 exports.deleteAudioFile = function (successCallback, errorCallback, filepath) {

@@ -37,12 +37,14 @@ public class AudioRecorderView extends RelativeLayout {
     private static String EXTENSION_FILE = "mp4";
     private static int AUDIO_ENCODER = MediaRecorder.AudioEncoder.AAC;
 
+    private static String DEFAULT_VIEW_MESSAGE = "Start Voice Input..."
     private static int DEFAULT_VIEW_COLORS = Color.WHITE;
     private static int DEFAULT_VIEW_BACKGROUND = Color.BLACK;
 
     // Views
     ViewSwitcher mViewSwitcher;
     TextView textViewCounter;
+    TextView textViewMessage;
 
     // Handlers and Listners
     Handler handler;
@@ -52,6 +54,7 @@ public class AudioRecorderView extends RelativeLayout {
     boolean isRecording;
     int recordLimitTime = 0;
     int recordTime = 1, minutes;
+    String viewMessage;
     int colorView;
     int colorBackground;
     String fileName;
@@ -252,7 +255,8 @@ public class AudioRecorderView extends RelativeLayout {
         final int img_button_accept_audio = this.getContext().getResources().getIdentifier("img_button_accept_audio", "id", getContext().getPackageName());
         final int img_button_close_view = this.getContext().getResources().getIdentifier("img_button_close_view", "id", getContext().getPackageName());
         final int text_view_counter = this.getContext().getResources().getIdentifier("text_view_counter", "id", getContext().getPackageName());
-
+        final int text_view_message = this.getContext().getResources().getIdentifier("text_view_message", "id", getContext().getPackageName());
+        
         inflate(getContext(), view_audio_recorderLayoutId, this);
 
         (findViewById(view_audio_recorderViewId)).setOnClickListener(new OnClickListener() {
@@ -283,6 +287,11 @@ public class AudioRecorderView extends RelativeLayout {
         textViewCounter = (TextView) findViewById(text_view_counter);
         textViewCounter.setTextColor(Color.WHITE);
 
+        // Get View of TextView Message
+        textViewMessage = (TextView) findViewById(text_view_message);
+        textViewMessage.setTextColor(Color.WHITE);
+        textViewMessage.setText(viewMessage);
+
         // Initialize the Handler to update the text view counter
         handler = new Handler();
     }
@@ -293,12 +302,19 @@ public class AudioRecorderView extends RelativeLayout {
      * @param recordLimitTime       - Time needs to be defined on Milliseconds
      * @param audioRecorderListener
      */
-    public void setConfigsToView(int recordLimitTime, AudioRecorderListener audioRecorderListener, String colorViews, String colorBackground) {
+    public void setConfigsToView(int recordLimitTime, AudioRecorderListener audioRecorderListener, String message, String colorViews, String colorBackground) {
         //Convert seconds to milliseconds
         this.recordLimitTime = (int) TimeUnit.SECONDS.toMillis(recordLimitTime);
         this.mAudioRecorderListener = audioRecorderListener;
 
         try {
+
+            if (message != null){
+                viewMessage = message;
+            } else if( viewMessage == null ){
+                viewMessage = DEFAULT_VIEW_MESSAGE;
+            }
+
             if (colorViews != null)
                 colorView = Color.parseColor(colorViews);
             else if (colorView == 0)

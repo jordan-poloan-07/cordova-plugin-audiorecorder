@@ -86,6 +86,7 @@ public class AudioRecorderPlugin extends CordovaPlugin {
 
                 // Get arguments to use on the view
                 int limitation = 0;
+                String message = null;
                 String viewColors = null;
                 String backgroundColor = null;
                 if (args != null && args.length() > 0) {
@@ -97,8 +98,9 @@ public class AudioRecorderPlugin extends CordovaPlugin {
                     }
 
                     try {
-                        viewColors = args.getString(1);
-                        backgroundColor = args.getString(2);
+                        message = args.getString(1);
+                        viewColors = args.getString(2);
+                        backgroundColor = args.getString(3);
                     } catch (JSONException e) {
                         Log.e(LOG_TAG, e.toString());
                     }
