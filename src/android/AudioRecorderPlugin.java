@@ -125,7 +125,7 @@ public class AudioRecorderPlugin extends CordovaPlugin {
                         removeCustomView();
                         sendErrorCallBack(callbackContext, errorCode, errorMessage);
                     }
-                }, viewColors, backgroundColor);
+                }, message, viewColors, backgroundColor);
             }
         });
     }
