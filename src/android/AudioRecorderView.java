@@ -37,7 +37,7 @@ public class AudioRecorderView extends RelativeLayout {
     private static String EXTENSION_FILE = "mp4";
     private static int AUDIO_ENCODER = MediaRecorder.AudioEncoder.AAC;
 
-    private static String DEFAULT_VIEW_MESSAGE = "Start Voice Input..."
+    private static String DEFAULT_VIEW_MESSAGE = "Start Voice Input...";
     private static int DEFAULT_VIEW_COLORS = Color.WHITE;
     private static int DEFAULT_VIEW_BACKGROUND = Color.BLACK;
 
@@ -322,6 +322,7 @@ public class AudioRecorderView extends RelativeLayout {
                 this.colorBackground = Color.parseColor(colorBackground);
             else if (this.colorBackground == 0)
                 this.colorBackground = DEFAULT_VIEW_BACKGROUND;
+
         } catch (IllegalArgumentException exp) {
             colorView = DEFAULT_VIEW_COLORS;
             this.colorBackground = DEFAULT_VIEW_BACKGROUND;
@@ -389,9 +390,7 @@ public class AudioRecorderView extends RelativeLayout {
 
             // Let's pretend that the accept button was clicked
             stopMediaPlayer(null);
-
             sendSuccessCallback(filePath, fileName);
-
         }
     }
 

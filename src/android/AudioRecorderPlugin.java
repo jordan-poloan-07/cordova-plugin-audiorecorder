@@ -73,6 +73,7 @@ public class AudioRecorderPlugin extends CordovaPlugin {
      */
     private void recordAudio(final CallbackContext callbackContext, final JSONArray args) throws JSONException {
         cordova.getActivity().runOnUiThread(new Runnable() {
+            
             @Override
             public void run() {
 
