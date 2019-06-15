@@ -54,7 +54,7 @@ public class AudioRecorderView extends RelativeLayout {
     boolean isRecording;
     int recordLimitTime = 0;
     int recordTime = 1, minutes;
-    String viewMessage;
+    String viewMessage = DEFAULT_VIEW_MESSAGE;
     int colorView;
     int colorBackground;
     String fileName;
@@ -311,8 +311,6 @@ public class AudioRecorderView extends RelativeLayout {
 
             if (message != null){
                 viewMessage = message;
-            } else if( viewMessage == null ){
-                viewMessage = DEFAULT_VIEW_MESSAGE;
             }
 
             if (colorViews != null)
